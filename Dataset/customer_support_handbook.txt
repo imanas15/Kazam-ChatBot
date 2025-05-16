@@ -1,0 +1,1413 @@
+﻿Support Handbook 1.0
+
+
+Version
+	Authored by
+	Approved by
+	Date
+	Remarks 
+	1.0
+	Abdul Kaleem 
+	
+
+	
+
+	
+
+
+
+	1.2
+	Abdul Kaleem
+	
+
+	1/2/2024
+	Added learnings chapter
+	1.3
+	Abdul Kaleem
+	
+
+	13/3/2024
+	Added Feb-2024 learnings
+	1.4
+	Abdul Kaleem
+	
+
+	11/6/2024
+	Added April & May learnings
+	1.5
+	Abdul Kaleem
+	
+
+	8/7/2024
+	June learnings updated
+	1.6
+	Abdul Kaleem
+	
+
+	8/9/2024
+	July and August Learnings
+	
+
+
+
+1. Introduction
+
+
+This handbook is for helping  EV drivers, hosts, Charge Point Operators, Vehicle OEMs, charging station OEMs, Fleet Operators, internal team members and everyone  else in Kazam Universe
+
+
+2.  Device Issues
+      1. Device not switching on?
+There can be multiple reasons here. First ask the specific issue- is the device not starting or it is stopping by itself? Is there any error message that mobile app is showing?  
+
+
+* Ask for error code or snapshot on charging screen or end_reason 
+* If insufficient balance message is coming, please ask EV driver to update the balance in his wallet. 
+* If the reason is invalid_device id, refer to 2.1.5
+* If user is stuck at BLE, then refer to 3.1.2
+* If the reason is ‘device busy’, contact tech team to change the device state from back end. (cross check once if any charging session is happening or not)
+* If the reasons is ‘your are not authorized’ , then refer 2.1.11
+* If device is going in auto-cut mode then, refer to 2.1.2 and 2.1.4
+* If device is showing any other colour than red, green or yellow, then contact FW team
+* If device is yellow, then device is disabled and host has to enable the device
+
+
+      2. Device is getting auto cutoff after every 2-3 seconds
+
+
+* (in multiverse dashboard) check the end reason. If it is over-voltage then check if voltage is set at 260V
+* (in multiverse dashboard) check the end reason. If it is over-load then check if voltage is set at 260 V
+* Check what is the auto-cutoff value set at. Ask for vehicle type. Some vehicle have wake-up period, so cut off period may have to be increased but after taking permission from support head
+* Else escalate and create a complaint ticket
+
+
+For Firmware version 34.3.12 and above, hardware configuration should be as shown
+
+
+      3. I am going to the device.. Is it online or not? Working or not? 
+
+
+* Check in tech dashboard
+* Tell user that device will also work on BLE so no issues (not for OCPP devices)
+* Try to call the host just to confirm.
+
+
+
+
+      4. Device is getting cutoff in 4-5 minutes? 
+
+
+* Ask the driver to check the end reasons in app
+* Check the end reason in multiverse dashboard. It might be ‘over-load’.. Which means the vehicle is drawing too much current. 
+* Request the driver to change or check his charger as it is drawing too much current. 
+* Else escalate and create a complaint ticket  
+
+
+   5. ‘Invalid_device id’ message is coming
+
+
+   * ‘Sir are you scanning the QR code or manually typing’
+   * If customer is manually typing, see if device id is properly written. (0,o; i,l,1; 2,z; sometimes people confuse these)
+   * If device id is right, then check in tech dashboard if organization of device is correct. If incorrect, then device will have to be moved to correct organization. (while changing device organization, make sure that host is also changed else payment failure will happen)
+   * If all good, the check if host is assigned to the device or not (in charge point management in multiverse dashboard)
+   * Else escalate and create a complaint ticket
+   * (it may also be possible that host is null at backend but it is showing in multiverse. So clear host and assign again)
+   * (if template app, the token expiry also can be one possible reason. App team will see to it)
+  
+
+
+
+   6. Device is offline (kazam make devices)
+   * First check if everything is ok on back end. You can check in multiverse dashboard, if other devices are online then it is a device level problem. Else inform tech team. (Server down or SSL certificate may have expired)
+   * Inform host/driver that device can be used via bluetooth. Meanwhile we will check why it is offline. 
+   * Inform Ops Manager to look into it and create a complaint ticket.
+
+
+(In case the charger is offline, there are 2 probable reasons, either the timestamp has gone wrong in the firmware or the device is not getting network connectivity. Check the status of the device using the getDeviceState API, and if the timestamp is correct & network flag is false, restart the device from the backend using the restart device API. In case the timestamp is wrong, the issue has to be taken to the firmware team and an OTA has to be done to fix the issue.)
+
+
+   7. The device is showing a ‘golden brown’ color
+
+
+   * Check if an emergency is pressed. If pressed, then rotate the red button and un-press it
+   * Otherwise it might be an earth fault. 
+   * Escalate, create a ticket, and inform the ops team
+
+
+   8. Device is stuck at white LED
+   * In case the device is constantly stuck at white LED, it means that the device is stuck in a BOOT LOOP, the firmware team has to be contacted in this case, if the issue persists, a site engineer has to be sent to rectify the issue. 
+   * In case the device is not working & there is a driver at the charging station, he/she has to be diverted to the nearest working charging station, by asking for his/her location. 
+   1. Something inside the device is burnt; fuse is blown
+   * Inform host this happens to protect the EV from over current
+   * Escalate, inform ops team and create ticket
+   * Ops team will check in CMS for the current and power logs and verify. 
+
+
+   *   
+
+      2. No LEDs glowing
+
+
+      * If no LEDs are glowing in the charging station, the input power circuit is broken at some point, ask the host to check whether the wiring is fine and the MCB inside the device is not tripped. 
+      * Once the above-mentioned points are rectified, if the device still does not show any LED lights, an engineer has to be sent to the site to rectify the issue.
+      * In case the device is not working & there is a driver at the charging station, he/she has to be diverted to the nearest working charging station, by asking for his/her location. 
+      1. You are not authorized to use this device’
+      * This means that host has authorized selective people. You have to contact the host. There is a call/message option available.
+      * Meanwhile, ping the host about this so that he can change his mind if possible. 
+
+
+      2. I have connected my tata Nexon EV , charger is connected but getting autocutoff after sometime? 
+      * Sir, please check handbrake, doors
+
+
+      1. App issues
+      1. Connection Error 1 coming while starting transaction
+      * Poor network, please try again
+(Device timeout, if happening too many times or many transactions, CMS team has to be contacted as Kazam broker might be overflooded with requests. This can be checked via tech dashboard in charging sessions)
+
+
+      2. My mobile app is crashing
+      * Ask to install the latest mobile app version
+      * Else ask mobile phone model and create ticket for mobile app department
+      * Check with support manager if we can switch on the device from multiverse dashboard to allow the EV driver to charge. Exceptions can be made on case by case basis since EV driver should not go without charging. (Money can be settled later)
+
+
+      3.  Something wrong with your network
+
+
+  
+
+
+
+This means that mobile app network connection is not right. Please retry or use a different WiFi/sim connection on phone
+
+
+      4. Map not opening
+
+
+      * Ask the customer to ensure that they have granted the location permission to the kazam app. 
+      * Assure the customer that their data & privacy is protected and is our utmost priority. 
+      * In case the issue persists, contact the app team with adequate details. 
+
+
+
+
+      3. Generic issues faced by customers (Kazam devices & Protocol)
+      1. What and “How to” queries?
+      1.  I have reached the charger location but not able to find the charger. 
+      * Sir, in the app there is a message and call option for the host. Please try that once
+      * If that does not work, kazam team will call the host that a driver is waiting at the location
+      * Else request customer to find other nearby charger
+      * Escalate, create ticket and ask ops team to check the correct location
+
+
+      2.  Driver is trying to charge the vehicle, but Bluetooth is just showing the connection. So the vehicle is not charging.
+
+
+      * Ensure you have given location permission to the kazam app. 
+      * Ensure location services / GPS is on from the drop down menu (ANDROID ONLY).
+      * Ensure bluetooth is enabled and is not connected to any other device like earphones or your vehicle's infotainment system. 
+      * Ensure that the device is powered on and the LED is showing green light. 
+      * In case the issue persists, try restarting the app & the charging point. 
+      * In case you're still unable to charge, please reach out to customer support for further help. We're available 24/7 at +91 99589 43092
+
+
+      3. Start and Stop Charging notifications not received by Host / Driver
+
+
+If the Host / Driver  has registered for DND. SMS notifications will not be triggered.
+To receive notifications please ask user to disable DND 
+
+
+More Info: SMS will get rejected with the error message “preference not matched" on DLT, as the User has enabled the DND
+
+
+      4. Revenue, Wallet & refund
+      1.  Withdrawal not credited to the bank account
+      * In case the withdrawal amount has not been credited to the customer’s account, reach out to the app team with adequate details. 
+      * Assure the customer that their money is safe and will be credited to their account within 24 working hours
+
+
+      2. Wallet Balance not updated after successful recharge
+      * In case the wallet balance is not updated after a successful deduction from the customer’s bank account, ask for proof and transfer the issue to app team 
+      * Assure the customer that their money is safe and the balance will be updated within 24 working hours. 
+      1. Charging started but the amount was not credited to the host wallet
+
+
+      * Inform the host to relax and we will look into it
+      * Go to the multiverse dashboard and see the transaction session and check the payment column. If it is failed, then click retry.   
+
+
+         * If successful, inform the host, else escalate and create a ticket with the mobile team as the responsible person
+
+
+         2. The Vehicle is not charging but money is deducted/ Difference in actual consumption(Meter) and App data.
+         * “Sir, we use a class one energy meter for measurement. However, if you let us know the transaction IDs, we will still look into it”
+         * Get the transaction ID and pass it on to the app team. If the complaint is genuine, after approval from VT, we can reimburse the money
+         * Meanwhile FW team has to check if the energy meter is working properly or not.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         5. SAAS Clients, 3rd Party OCPP devices, Template App
+         1. What, When, and “How to” queries
+         1. How to add drivers and allot RFIDs? (Project Manager)
+         * Go to the Vehicle and Driver Management section and add RFIDs for the respective drivers. Please note driver should have the kazam app or template app, and then his number will be reflected in the list of drivers. 
+         * Once done, go to the charger controls and select ‘send_locallist’
+
+
+         2. How can I change the host of the charger ?  (Project Manager)
+         * You will have to request our support team for that as we have to do it from back-end (Can be done from tech dashboard and CMS also)
+         1.  Tariff assigned does not match the money deducted from the Driver mobile wallet
+         * Check the tariff assignment via CMS account of the client. 
+         * Inform the app team that the correct tariff is not reflecting for the devices
+         1. What configuration to keep on first-time device on-boarded
+Localpreauth - TRUE
+Loaclauthlist - TRUE
+AUTH REMOTE TRANSACTION -TRUE 
+Authorization cache - True 
+Allowofflinetxnforunkownid- True
+MeterValuesSampledData - Energy.Active.Import.Register, Power.Active.Import, Voltage, Current.Import, Temperature (if dc charger, ,SoC should also be added)
+
+
+         2. When the device is scanned only one connector is visible
+This means during the configuration, wrong data was input. CPO/Host has to reconfigure the device correctly. 
+         3. How to check the Revenue of the Charging utilization? (Project Manager)
+         * Revenue Management module is coming up. Till then Host will be able to see it in his App
+
+
+         4. I want Kazam charging stations on my template app?(Project Manager)
+         * This is a requirement that needs to be forwarded to the tech team. Bug commercial arrangement is not available. 
+         1. ‘EVsuspended’ message came when I attempted to charge
+Please remove the gun from your car and then insert it again and try again
+
+
+         2. I need to add a new device, please add a QR code 
+Devices now can be added via CMS and QR code can be generated as well. 
+
+
+         2. App issues
+         1. App Crashing
+         * Ask the user to try reinstalling the app and ensure that there is a stable internet connection. 
+         * Ask the user at which screen the app is crashing, then contact the app team with adequate details for the same. 
+         * Assure the customer that the issue will be resolved ASAP.
+
+
+         2. App not opening 
+         * Ask the user to try reinstalling the app and ensure that there is a stable internet connection. 
+         * In case the issue persists, the app team has to be contacted with adequate details for the same. 
+         * Assure the customer that the issue will be resolved ASAP.
+
+
+
+
+         6. OCPP and OEM specific issue
+
+
+         3. OCPP device is showing busy in CMS but it is actually idle (or any other status mismatch)
+Steps to Clear - 
+1) Send TriggerMessage of StatusNotification without connector ID to device.
+=== If doesn't work ===
+2) Send TriggerMessage of StatusNotification with connector ID of the stuck connector(s)
+=== If doesn't work ===
+3) Soft Reset the device
+=== If doesn't work ===
+4) Hard Reset the device
+=== If doesn't work ===
+5) Power Cycle Device physically
+
+
+         4. RFID card is not working 
+         * First check device is offline or online
+         * if online,
+         * Is id tag added in CMS and marked as active.
+         * In ‘localauthlist’ and loaclpreauthrize check.. If both true, 
+         * Getlocallist- if 0 or -1 there is no list, so u need to upload. 
+         * At this point try to send the local list  again with increased expiry date and the rfid added (Differential update) (however this case is unlikely)
+         * If offline 
+         * CPO has to send an engineer to bring back the device online
+For RFID to work the user data must be available in local cache.
+LocalPreAuthorize- True
+LocalAuthListEnabled- True
+AuthorizeRemoteTxRequests - True
+AuthorizationCacheEnabled - True 
+AllowOfflineTxForUnknownId - True
+(If device is offline or online, and CPO is ok allowing any id to be used ( whether in local list or not), then enable ‘AllowOfflineTxForUnknownId’for unknown id card)
+
+
+         5. Cannot find a couple of devices.
+         * There can be multiple reasons behind this. See if you have that device’s access with your admin. If the problem persists, connect to your POC and report the issue.
+         * Device showing offline although a session is ongoing. The charging sessions page always refreshes on a new incoming charging session. Refresh the charging points table to see the updated device state
+         1. Any 3rd party hardware level complaint?
+         * CPO has to connect to hardware OEM for the same. 
+
+
+         2. OCPP device not working 
+Go to multiverse dashboard, device id view and see if any of the errors are getting displayed 
+
+
+(Refer OCPP 1.6 document, Chapter 7.6)
+         3. All of a sudden, all devices showing offline
+
+
+         * Check with the product team if the authorization token is expired
+         * Check if SSL certificate is expired
+         * Check with CMS team if back-end server (MQTT Broker or mongoDB is down or not)
+
+
+VALUE 
+	DESCRIPTION 
+	ConnectorLockFailure 
+	Failure to lock or unlock connector. 
+	EVCommunicationError 
+	Communication failure with the vehicle, might be Mode 3 or other communication protocol problem. This is not a real error in the sense that the Charge Point doesn’t need to go to the faulted state. Instead, it should go to the SuspendedEVSE state. 
+	GroundFailure 
+	Ground fault circuit interrupter has been activated.
+	HighTemperature 
+	Temperature inside Charge Point is too high.
+	InternalError 
+	Error in internal hard- or software component. 
+	LocalListConflict 
+	The authorization information received from the Central System is in conflict with the LocalAuthorizationList. 
+	NoError 
+	No error to report. 
+	OtherError 
+	Other type of error. More information in vendorErrorCode
+	OverCurrentFailure 
+	Over current protection device has tripped.
+	OverVoltage 
+	Voltage has risen above an acceptable level. 
+	PowerMeterFailure 
+	Failure to read electrical/energy/power meter.
+	PowerSwitchFailure 
+	Failure to control power switch. 
+	ReaderFailure 
+	Failure with idTag reader.
+	ResetFailure 
+	Unable to perform a reset.
+	UnderVoltage 
+	Voltage has dropped below an acceptable level. 
+	WeakSignal 
+	Wireless communication device reports a weak signal.
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+         4. Device showing cable fault like this image shown. 
+Check the Multiverse dashboard for the error code and inform the host. 
+
+
+  
+  
+
+
+
+
+
+         5. Connector is stuck
+
+
+         * Vehicle connector release press
+         * Charger emergency stop press
+         * Send unlock connector from multiverse (online device)
+
+
+         6. ShorePower(OEM/white labeled) This device is showing last online in CMS but I am observing that the device is offline.
+
+
+It happens when the device is responding to the server, but not sending any actual OCPP messages. It is likely a network/firmware issue and the OEM should be informed about such behavior of the device.
+
+
+Also, The problem statement would be - 
+ Device responding to WebSocket ping-pong frames but not sending any OCPP messages (Heartbeat, BootNotification, StatusNotification, etc.)
+
+
+         7. Device shows faulted, no error code and not able to charge. This issue is observed in DC Charger(Mindra 60kw)
+
+
+ Ensure the charger door is closed  
+
+
+
+
+         8.  What is cloud_stop in end reason
+From now on, if a transaction is ongoing for > 15 hours and device on which the transaction is ongoing is offline... The transaction will be marked temporarily closed with an end_reason: "cloud_stop" and the device's connector will be marked idle. No payments will get processed until the device comes online and sends actual stop transaction data.
+
+
+         9. Why continuously remotstarttransaction packets are sent and they are rejected due to which not able to start session from application
+
+
+This happens when a transaction isn't gracefully closed from the device end and the cloud, tries to stop it due to time over or limit reached reasons
+
+
+
+
+         7. Charger Specific issues
+         1. Delta Specific 
+         1. Error code - 0004020 showing in CMS/Tech Dashboard for an OCPP charging station
+This is an “Incoming Voltage” low error. The resolution is “remove the DC power from the controller and insert it again (as shown in the image). This task should be done by the service engineer of the OEM. image attached
+  
+  
+
+
+
+         2.  7.4kw device going offline 
+Sometimes the network fluctuates, Please switch off the device for 5 minutes and restart the device. The device will come online.
+         3. Start charging command rejected or shows “something went wrong” on app while you to charging.
+
+
+Delta: Accepts start command even if the load is not connected/goes to preparing mode in the multiverse.
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         2. Exicom Specific
+         1. Other Error 14 showing in the multiverse. 
+Emergency_Detect.. Ask the EV driver to release the emergency stop. (With Exicom charger, we found out that it still shows available even if there is an emergency detect error)
+         2. Start charging command rejected or shows “something went wrong” on app while you are charging.
+
+
+Exicom: If the device doesn't go to preparing mode or the vehicle is not detected then packets are rejected. 
+  
+
+
+
+         3. Connectivity issue due to firmware
+
+
+Exicom device was onboarded on CMS, which was frequently getting disconnected and was not able to reconnect with our CMS.
+
+
+Device details -
+Device id : cst3s5
+OEM - Exicom
+Output capacity : 7.4KW
+Model : HE518989
+Connectivity: GSM(Airtel)
+Firmware version(prior to solution) : B:35.11.2_O:35.20.02_M:35.12.8
+Firmware version(post solution): B:35.11.2_O:35.20.09_M:35.12.8
+
+
+It took us several rounds of debugging to find the root cause and solution of the same.
+
+
+Stage 1:
+We tried to look into the firmware of the device, and found a certain configuration level mismatch, Device firmware was not compatible with the OCPP 1.6 as it had keys which are not part of OCPP 1.6 schema.
+At the end of the configuration keys we found the unknown key as shown below:
+{
+   "key": "MaxChargingProfilesInstalled",
+   "readonly": true,
+   "value": "3"
+}
+  ],
+  "unknownKey": null
+}
+
+
+This was rectified by the OEM team with a new firmware release: B:35.11.2_O:35.20.05_M:35.12.8
+
+
+Stage 2:
+With the new firmware release we were hopeful that the issue would be solved, but unfortunately the issue persisted, with a consistent configuration key we looked into each configuration details and found that “WebSocketPingInterval” was set to 0.
+
+
+WebSocketPingInterval - This is the number of intervals within which a device sends a ping request to a server, asking to establish a connection. We changed the value from 0 to 10, making the device send ping requests every 10 seconds.
+
+
+With these changes done, the device was online for 2 days, but lost connection with our CMS and did not establish a connection thereafter.
+
+
+The OEM team, using their own application, started testing the device, and confirmed that the device has network connectivity and was showing online on their app, but could not connect with our cms. 
+ 
+Note : The OEM team confirmed that our CMS was sending a ping request to the device every 15 seconds, asking the device to connect, but the device could not connect. 
+
+
+The OEM team further updated the firmware to : B:35.11.2_O:35.20.07_M:35.12.8
+
+
+Stage 3: 
+We got access to the logs of the device stored locally in the machine, and upon analysis we found that the device was not being able to resolve the host name to connect with our cms. 
+
+
+E (566505) esp-tls: couldn't get hostname for :ocpp.kazam.in: getaddrinfo() returns 202, addrinfo=0x0
+E (566505) TRANSPORT_BASE: Failed to open a new connection: 32769
+E (566505) TRANSPORT_WS: Error connecting to host ocpp.kazam.in:9220
+E (566515) WEBSOCKET_CLIENT: Error transport connect
+I (566515) WEBSOCKET_CLIENT: Reconnect after 10000 ms
+
+
+After sharing these details with the OEM team, they came to a conclusion that the device was generating random garbage value at the time of websocket communication with our cms and hence was unable to connect with our cms once connection was lost.
+
+
+The OEM team updated the firmware once again with: B:35.11.2_O:35.20.09_M:35.12.8
+
+
+Conclusion : Device had issues with its firmware, where it was not compatible with OCPP 1.6 schema, and further it was generating random garbage data at the time of websocket communication with our CMS. 
+With the updated firmware(B:35.11.2_O:35.20.09_M:35.12.8) device is stable and online with our cms from the past 20 days.
+
+
+
+
+         3. Smapee charger (New Zealand)
+
+
+As is explained in our manuals and during integration tests, a transaction can only be stopped by:
+        1. Removing the cable
+        2. Marking the station as unavailable 
+        3. During a HardReset
+
+
+Sending a RemoteStop will only stop the energy flow and will not end the session (we do this so that customers won’t be able to avoid parking fees). As the cable is still plugged in, the session is still open. I’ve now ended the session for you, but remember in the future to disconnect the cable to end a session. 
+
+
+Until the cable is removed, the charger is not made “available”. This is common in Europe and also in NZ to have idle fees as “charging blocking” is a real issue.  Hence OEMs have ensured that until the cable is removed, the charger is still engaged.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         8. Monthly learnings
+         1. September 2023 learning
+Issue: Drivers are not able to charge because of the "ongoing session" error Cause: In the Kazam app, we have allowed multiple sessions for a single driver as earlier the security in charge only used to start transactions for all drivers. For a few clients, we made limited sessions for their drivers (big basket) and because previous sessions were 'ongoing' EV drivers could not charge anymore. 
+Solution: Meanwhile Firware team is testing a new Firmware with which ongoing issue will reduce and meanwhile CMS team is implementing a stop transaction button for the support team to manually stop past ghost transactions. (ghost transaction- that has stopped on the charger but not on software because the last packet was not sent)
+
+
+Issue: Many Drivers were not able to charge due to "Limit reached" even when the device was at 0 tariff
+Cause: An update pushed on the App resulted in many drivers facing the issue where instead of the device being at 0 tariff, then also usage limit was getting calculated. 
+Solution: EV Drivers were asked to use the latest version of the App and this resolved the problem. the latest version is 5.6.2
+
+
+Issue: "Not Authorized" user issue faced by Big Basket drivers 
+Cause: When drivers are onboarded to BB org from CMS (manually added in CMS org), +91 was not added. Afterward when the driver downloaded the kazam app, a new ID with +91 was created leading to double driver IDs. 
+Solution: The duplicate ID in the Kazam org is deleted from Multiverse to resolve the issue. Also, now multiple driver IDs are not created via CMS and App
+==================================================================
+
+
+Ticket ID: https://erp.kazam.in/complaints/detail?id=pour
+
+
+Issue reported: Duplicate invoice entry in driver's ledger and the payee details mismatch in the duplicate invoice.
+The issue was only seen in Multiverse and didn't impact the driver's Wallet.
+
+
+Cause: A 6-digit random number generator was used for generating invoice numbers.
+Since all 6-digit random numbers were consumed, a new invoice was created with a duplicate number, displaying 2 invoices for the same transaction.
+
+
+Solution: To solve the issue the width of the invoice number is increased from 6 to 12.
+==================================================================
+
+
+Ticket ID:  https://erp.kazam.in/complaints/detail?id=difficulty1
+
+
+Issue reported: Dhinesh(site engineer) complained that the device is charging even after the plug disconnects. (BB thane)
+
+
+Cause: After Charging BB driver disconnected the plug to stop the transaction. But the charging session continued without terminating.
+It was identified that Auto cutoff was disabled for the device because of which the session was not terminating even after the plug disconnect.
+
+
+Solution: Auto cutoff was enabled for the device to solve the issue.
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=greatly
+
+
+Issue reported: The device is online, but drivers are getting a "Something went wrong" message when they initiate charging.
+
+
+Cause: The device was online but the mains power was turned off because of which drivers got the error message "Something went wrong" when they tried to start charging. 
+In Charge Point Management the status was "Online" and "No Mains".
+
+
+Solution:  BB driver was informed to turn on DB box mains. DB was turned on to initiate the charging
+Improvement Needed: The ERROR messages must be precise and meaningful
+=================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         2. November 2023 learnings
+
+
+Ticket ID: https://erp.kazam.in/complaints/detail?id=habit
+
+
+Issue reported: Customer complained that she is being charged for transactions not done by her.
+
+
+t6amdp 48860329 --> customer performed transaction.
+f7f5b7  65037831 --> Transaction not performed by customer but money deducted from her wallet
+
+
+The customer's wallet balance was zero when 2 transactions 65717530 and 10935655 on f7f5b7 were attempted by someone.
+
+
+Cause: In Kazam One user can log in from multiple devices and access his wallet from any device.
+If a user has logged in to any device and doesn't log out explicitly then the user's session will remain active.
+
+
+Solution: To solve the issue the user was logged out from the backend from all devices and was asked to re-login.
+
+
+Permanent solution: The user should have the ability to log out from all active logins 
+
+
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=triangle
+
+
+Issue reported: The device was offline even though the MCB and Main power was ON.
+
+
+Cause: Fuse had gone because of which device was offline
+
+
+Solution: Fuse was replaced to resolve the issue
+
+
+Scope of improvements
+         * We need to implement notifications for fuse failures
+         * Cost of replacing a fuse is huge compared to the cost of fuse.  Hardware Design changes must be made such that the fuse can be inspected and changed easily.
+==================================================================
+
+
+Ticket ID: https://erp.kazam.in/complaints/detail?id=discover12
+
+
+Issue Reported: The device was offline and the LED was displaying red even after releasing the emergency stop button.
+
+
+Cause: The emergency button wire was broken. 
+
+
+Solution: Fixed wire to resolve the issue
+
+
+==================================================================
+
+
+Ticket ID: https://erp.kazam.in/complaints/detail?id=familiar1
+
+
+Issue reported: Customers wallet balance was showing -3454/-. He had asked for a refund.
+
+
+Cause: Device was faulty and it was displaying consumption of ~3000Kw.
+Kazam automatically fails wallet updates for all the transactions >> Rs 5000/-. But the GST amount was deducted from the wallet resulting in -VE wallet balance for customer.
+
+
+Solution: 
+         * Transaction was reversed to address customer concern
+         * Code was fixed to fail GST deductions from wallet for transactions >> 5000/-
+==================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         3. December 2023 learning
+
+
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=range1
+
+
+Issue reported: Customer complained that when the QR code is scanned, the error message "device doesn't exist" message is displayed
+
+
+Cause: A device is removed for servicing and is marked as REM is DB. If the device is rectified and reinstalled without using the PT tool. The device will not reflect in the multiverse.
+In this scenario if a driver tries to scan the QR code on the device, the "device doesn't exist" message is displayed.
+
+
+Solution: The device was onboarded using the PT tool in Multiverse.
+
+
+Permanent solution: A protocol must be established so that all re-instantiated devices must go through the PT tool to ensure onboarding to the Multiverse
+
+
+==================================================================
+
+
+Ticket ID: https://erp.kazam.in/complaints/detail?id=excitement1
+
+
+Issue reported: The Host complained that the withdrawal amount is not credited to the account. He has placed a withdrawal request for 1000+25+1000+25. 
+Rs 50/- was credited to the account but Rs. 2000/- had failed
+
+
+Cause: Balance was low in Razorpay. Hence Rs 50 was credited and Rs 2000/- had failed
+
+
+Solution: Top-up was done in Razorpay to process host payments
+
+
+Permanent solution: Minimum balance must be maintained to avoid tickets from hosts related to withdrawal. 
+
+
+==================================================================
+
+
+Ticket ID: https://erp.kazam.in/complaints/detail?id=flies1
+
+
+Issue reported: Customer complained that MCB is tripping and the device is offline 
+
+
+Cause: The engineer visited the BB hub and rectified that the issue is with the f1 fuse. Because of this the MCB was tripping and the device was going offline
+
+
+Solution: The f1 fuse was replaced to resolve the issue.
+
+
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=thing
+
+
+Issue reported: BB Dwarka drivers were not able to start charging even though the devices were online. The app showed a white screen once drivers initiated charging
+
+
+Cause: The network at BB location was very weak and the app was not able to display valid error messages and was showing a white screen.
+
+
+Solution: The issue was resolved after an hour once network strength increased
+
+
+Permanent solution: All errors from the app must be handled to avoid blank/white screens.
+
+
+==================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         4. January 2024 learnings
+
+
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=driven
+
+
+Issue reported: Customer complained that he is not receiving transaction notifications on his hosted device.
+
+
+Cause: If a user enables DND with his Mobile service provider. Notifications are not delivered to the User. The error message logged is "Preference not matched on DLT"
+
+
+Solution: The user must disable DND to receive notifications 
+
+
+Permanent solution: Apart from SMS notifications KAZAM must plan for  WhatsApp and email notifications
+
+
+==================================================================Ticket ID: https://erp.kazam.in/complaints/detail?id=aboard
+
+
+Issue reported: Drivers are not able to charge vehicles. Firmware and config updates were failing on the device.
+
+
+Cause: Device replacement SOP was not followed. TDK on the DB is mismatched with the device failing to accept configuration changes
+
+
+Solution: TDK was updated to resolve the issue.
+
+
+Permanent solution: Device reinstallation PROTOCOL must be strictly followed to avoid the failure
+
+
+==================================================================Ticket ID: https://erp.kazam.in/complaints/detail?id=talk123
+
+
+Issue reported: Frequent complaints from BB Yeshwantpur hub that drivers were not able to charge vehicles due to network disconnections 
+
+
+Cause: The GSM network was fragile resulting in difficulty in starting charging. 
+
+
+Solution: The issue was resolved by configuring WIFI for all the BB devices in the Yeshwantpur hub.
+
+
+Permanent solution: IN hubs where the network is weak we must install WIFI routers by default
+
+
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=talk123
+
+
+Issue reported: Frequent complaints from BB Yeshwantpur hub that drivers were not able to charge vehicles due to network disconnections 
+
+
+Cause: The GSM network was fragile resulting in difficulty in starting charging. 
+
+
+Solution: The issue was resolved by configuring WIFI for all the BB devices in the Yeshwantpur hub.
+
+
+Permanent solution: In hubs where the network is weak we must install WIFI routers by default
+
+
+==================================================================
+Ticket ID: https://erp.kazam.in/complaints/detail?id=history12
+
+
+Issue reported: Auto-cutoff issue faced by many drivers frequently 
+
+
+Cause: The devices were upgraded with the latest firmware 34.3.12. But the "Pause time for faults" was set to null for a few devices.
+If the voltage drops below a minimum threshold then the transaction fails to resume.
+
+
+Solution:  "Pause time for faults" was set to 100.
+
+
+Permanent solution: If an upgrade fails then the old config values must be restored on the devices
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         5. February 2024 learnings
+
+
+
+
+Ticket ID
+	https://erp.kazam.in/complaints/detail?id=gold12
+	Issue
+	EV driver had complained that OLA had got locked during charging and was not able to unlock
+	Cause
+	Due to software malfunction EV's get locked or display invalid messages
+	Solution Implemented
+	A quick restart of OLA EV solved the problem. Helped customer by sharing video to restart OLAhttps://www.youtube.com/watch?v=EmXQ6pxScRo
+	
+
+	
+
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=smell12
+	Issue
+	The device was ONLINE and available. But EV driver was not able to start charging
+	Cause
+	The Device was online but the status of the connector was UNAVAILABLE. No one was using the connector when the driver called
+	Solution Implemented
+	A hard reset was done on the device. The status of CONNECTOR changed to available and the EV driver was able to charge
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=ever
+	Issue
+	The charging History of the device was not visible to the Host
+	Cause
+	The device was mapped to TVS org for a testing activity and was not reverted.
+	Solution Implemented
+	The device org was mapped back to KAZAM and host was able to view the charging history
+	Permanent Solution
+	Org change should be done carefully and permission to change ORG should be restricted
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=special1
+	Issue
+	The EV driver was not able to charge as the charger was disconnecting frequently
+	Cause
+	After the firmware upgrade to 34.12. The Pause time for faults was set to NULL resulting in frequent disconnections
+	Solution Implemented
+	The pause time for faults was set to 100 to resolve the issue
+	Permanent Solution
+	Firmware Upgrades must be tested for corner cases of failure
+	
+
+         6. April 2024 learnings
+Ticket ID
+	https://erp.kazam.in/complaints/detail?id=smell1234
+	Issue
+	An invalid Device ID error appeared while configuring new devices in the customer site.
+	Cause
+	The host ID value was not Null which indicated the device was already configured.
+But since it was a new device and was not configured invalid ID ERROR was thrown.
+	Solution Implemented
+	2 solutions were implemented to Solve the problem
+1. The APP team ran the "ConfigDevice" API to set the Host value to NULL.
+2. A host was assigned and the clear host action was performed to reset the Host Value as NULL
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=mine12
+	Issue
+	Device Config failure 
+	Cause
+	Data validation implemented at the server side was not End-to-end tested.
+Resulting in device configuration failure
+	Solution Implemented
+	Changes were reverted to solve the issue.
+	Learning
+	Change  Management Process and testing must be strengthened 
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=worker1234
+	Issue
+	Neo was stranded after charging at the Kazam charging station
+	Cause
+	Once Neo is 100% charged. The main battery bypassed the auxiliary battery.
+The auxiliary battery was removed but the instrument cluster was still displaying from the Main battery. (Which is not expected)
+The auxiliary battery is needed to communicate with BMS and the Engine. Since it was bypassed vehicle was stranded.
+	Solution Implemented
+	The main battery was left to discharge for 24 hours.  (Battery was 98% after 24hours).
+Main battery connectors were removed and reconnected to reset auxiliary battery communication.
+	Learning
+	Never charge Neo 100%
+	
+
+
+
+
+
+
+
+
+
+
+
+Ticket ID
+	https://erp.kazam.in/complaints/detail?id=horse
+	Issue
+	Devices are frequently going offline. The customer was not interested in using devices in BLE mode
+	Cause
+	Network issue, because of which devices were frequently going offline
+	Solution Implemented
+	Wifi was configured for all devices
+
+
+	
+
+
+
+         7. May 2024 learnings
+
+
+Ticket ID
+	https://erp.kazam.in/complaints/detail?id=brother1234
+	Issue
+	The device is Online but not able to start charging
+	Cause
+	The device is lite_ble. But the firmware was updated to 34.2.12.
+As a result, the connector status was showing No_Mains
+	Solution Implemented
+	The firmware update was reverted to 24.2.3 and the issue was resolved
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=repeat12
+	Issue
+	Drivers are charging vehicles. But the host is not getting paid.
+	Cause
+	For the newly added device. The owner of the charger was updated as Organization. As a result, payments were made to the Organization's wallet.
+	Solution Implemented
+	Ownership has been changed to Host and past payments were settled
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=too123
+	Issue
+	The host complained that he was getting paid only ₹14.76 for all transactions
+	Cause
+	The tariff on the device was set to fixed. Hence for all transactions same amount was deducted
+	Solution Implemented
+	The tariff was set to Kwh
+	
+
+	
+
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=mine12
+	Issue
+	Not able to configure devices from the KAZAM App
+	Cause
+	The HostID was not NULL. Because of this when engineers tried to configure the device. The message was displayed that "Device is already configured"
+	Solution Implemented
+	Clear host was performed by the app team. Post which the device configuration succeeded.
+	
+
+Issue
+	Around 30% of the devices went offline
+	Cause
+	All Kazam devices rely on a time server to fetch time data. Failure to connect to this server results in SSL verification failure resulting in MQTT connection failure. This is the reason many devices went offline
+	Solution Implemented
+	Server restart resolved the issue
+
+
+	
+
+
+
+         8. June 2024 learnings
+
+
+
+
+Ticket ID
+	https://erp.kazam.in/complaints/detail?id=tube1
+	Issue
+	The device is Online but not able to start charging
+	Cause
+	The device is lite_ble and online. But output is not greater then 5W
+	As a result, the EV's were not getting charged
+	Solution Implemented
+	The energy metering IC was replaced
+	 
+	 
+	 
+	 
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=bridge12
+	Issue
+	Withdraw option is not enabled for Hosts
+	Cause
+	When device is configured from Novo. The withdraw option is not enabled on the App
+	Solution Implemented
+	Withdraw option was enabled by App team and host was able to update bank details and withdraw
+	 
+	 
+	 
+	 
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=anyone1234
+	Issue
+	Unlock Gun was failing in Tata Tiago
+1. Device restart was also performed
+2. Multiple time UnlockGun command was issued to charger
+EV was not releasing charger
+	Cause
+	Many tata tiago EV's are having issue with Unlock connector
+	Solution Implemented
+	Tata has option to physically unlocking Gun. Video was shared with customer and was able to unlock.  https://www.youtube.com/watch?v=7xFNDJhu8G0
+	 
+	 
+	 
+	 
+	Issue
+	TVS drivers landing at EMO chargers
+	Cause
+	EMO chargers were replaced with Kazam chargers in many places.
+As a result drivers navigate to charger location and try to use EMO chargers.
+TVS vehicles are not supported on EMO resulting in drivers reaching out to support for help.
+	Solution to be Implemented
+	Operations team to add fliers on all the EMO devices indicating only for EMO
+	Lesson learnt
+	Fliers are to be made mandatory when any chargers is installed. It will avoid misleading EV drivers
+	 
+	 
+	 
+	 
+	Issue 
+	Frequently BB drivers complained on Auto-cutoff issue with LEV AC (firmware 34.3.12)
+	Cause
+	When firmware was updated to 34.3.12. The pause time for faults was getting updated to NULL or 0.165 on many devices.
+As a result many drivers were complaining on Auto-cutoff after starting charger.
+	Solution implemented
+	Hardware configuration "Pause time for Faults" was set to 100 to solve the issue on the devices reported
+
+
+Support identified around ~600 devices where Pause time for faults was set to Null or 0.165 and updated configuration.
+	Lesson learned
+	
+
+Upgrade testing has to be done more stringently
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ticket ID
+	https://erp.kazam.in/complaints/detail?id=bridge12
+	Issue reported
+	Charger Host reported that Payout option was not visible to him
+	Cause
+	If the charger is configured through the CMS, the payout option will not be visible to the host.
+	Solution Implemented
+	The isHost variable was added to the user data in the database to address the issue.
+	Lesson to be learnt
+	Whether configured from the CMS or the app, all parameters must be updated consistently.
+	 
+	 
+	 
+	 
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=muscle123
+	Issue reported
+	Not able to charge vehicles due to damaged sockets
+	Cause
+	The visiting engineer observed that many drivers were using unauthorized plugs to charge their vehicles.
+	Solutions
+	Damaged sockets were replaced
+	Lesson to be learnt
+	Security guards and SPOCs must be trained to ensure that only authorized plugs are used for charging within the Kazam infrastructure.
+	 
+	 
+	 
+	 
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=too123
+	Issue reported
+	Host complained that he was reciving only 14/- for all transactions
+	Cause
+	While confguring rate on device. Engineer had chosen fixed price option. As a result only  Rs 14/- was charged for all the transactions
+	Solutions
+	The rate was reconfigured to resolve the issue.
+	Lesson to be learnt
+	Field engineers should set the rate conciously to avoid such mistakes
+	 
+	 
+	 
+	 
+	Ticket ID
+	https://erp.kazam.in/complaints/detail?id=freedom
+	Issue reported
+	The customer reported that their vehicle's capacity is 2.9 kW, but they were charged for 5 kW.
+	Cause
+	The device is faulty. Kazam has informed the RWA to pay the AMC and have the devices repaired.
+	Solutions
+	The driver has been advised to request a refund from their RWA.
+	Lesson to be learnt
+	The app should include a pop-up displaying a warning message indicating that the device is faulty and that Kazam is not responsible for any additional charges incurred.
+	 
+	 
+	 
+	 
+	Issue reported
+	Many hosts have not received payment following PPI enablement.
+	Cause
+	Errors in updating account numbers, such as omitting leading zeros.
+	Mistakes in updating beneficiary names, such as merging first and last names.
+	 
+	Solutions
+	New account IDs with valid details were created, and the payouts were processed
+	Lesson to be learnt
+	Request copies of cancelled cheques from customers to obtain account details.
+	If a mistake is made while creating a host account, it cannot be corrected; only new accounts can be created.
+	RazorPay support is inadequate. Despite numerous follow-ups, they have been unable to resolve the issues or provide any workarounds.
+	We must consider other PPI service providers, as RazorPay is not equipped to effectively support major incidents.
