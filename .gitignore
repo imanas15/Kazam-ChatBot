@@ -1,7 +1,9 @@
 Vector_db/complete_data_sb
 Vector_db/rmlu_Vector_db
 Vector_db/sample
-Dataset
+Dataset/complete_data_sb.txt
+Dataset/RmluBOT.txt
+Dataset/sample.txt
 venv
 Campus Query.docx
 CampusQuery.pdf
