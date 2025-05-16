@@ -3,20 +3,20 @@ import sys
 sys.path.append('C:/Users/HP/Downloads/Final_Year_Project/LangChain.py')
 from Kazam_Chat import QnA_Chain
 
-st.title("CampusQuery")
+Kazam_about = """We are creating an ecosystem for electric vehicles to thrive- 
+
+1. Integrated network of 50,000+ charge points, easily deployable on any platform
+2. Hardware brand-agnostic software to control, assess, analyze & manage money and energy flow for charging hubs or EV fleets
+3. Energy Management system to highlight and optimise cost and ensure robust e-fueling for bus depots
+4. An array of slow and fast chargers, meant for 2W, 3W, and 4W - to turn any parking spot into a monetised EV charging station"""
+
+st.title("Kazam-Support-Bot")
 
 sidebar = st.sidebar
 st.sidebar.title("About")
 sidebar.write("")
-sidebar.write("The CampusQuery is able to answer the questions related to the Dr. Rammanohar Lohia Avadh University, handle a variety of question types, provide accurate and relevant answers, and be easy to use for both technical and non-technical users. This chatbot is completely conversational and have a memory which store the previous chats and answers the query with a relation to the previous queries.")
+sidebar.write(Kazam_about)
 sidebar.write("")
-sidebar.write("**Our Mentor :**")
-sidebar.write("Dr. Avadhesh Kumar Dixit")
-sidebar.write("")
-sidebar.write("**Meet The Developers :**")
-sidebar.write("1) Manas Barnwal")
-sidebar.write("2) Devesh Mishra")
-sidebar.write("3) Priyanka")
 
 # Initialize session state if it doesn't exist
 if "messages" not in st.session_state:
@@ -28,7 +28,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Get user input
-if prompt := st.chat_input("Hi.. I am rmlu Bot, How can I help you"):
+if prompt := st.chat_input("Hi.. I am Kazam Support Bot, How can I help you"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
